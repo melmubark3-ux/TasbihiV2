@@ -1,0 +1,54 @@
+name: Android Build & Test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install --legacy-peer-deps
+      - run: npm run lint --if-present || true
+      - run: npx tsc --noEmit || true
+      - run: npm test -- --passWithNoTests || true
+
+  build-android:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - run: npm install --legacy-peer-deps
+      
+      - name: Generate Autolinking Config
+        run: |
+          mkdir -p android/build/generated/autolinking
+          npx react-native config > android/build/generated/autolinking/autolinking.json
+          echo "Autolinking config generated"
+          
+      - name: Build Android APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+          
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tasbihi-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk

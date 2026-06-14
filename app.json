@@ -1,4 +1,6 @@
 {
-  "name": "TasbihiV2",
-  "displayName": "TasbihiV2"
+  "name": "Tasbihi",
+  "displayName": "تسبيحي",
+  "version": "1.0.0",
+  "description": "تطبيق التسبيح والاستغفار بالصوت مع أوقات الصلاة والأذان"
 }
