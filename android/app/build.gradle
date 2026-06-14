@@ -4,7 +4,6 @@ apply plugin: "com.facebook.react"
 
 react {
     root = file("../../")
-    autolinkLibrariesWithApp()
 }
 
 def enableProguardInReleaseBuilds = false
@@ -31,9 +30,7 @@ android {
         }
     }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
+        debug { signingConfig signingConfigs.debug }
         release {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
@@ -48,4 +45,14 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation project(':@notifee_react-native')
+    implementation project(':@react-native-async-storage_async-storage')
+    implementation project(':@react-native-community_geolocation')
+    implementation project(':react-native-safe-area-context')
+    implementation project(':react-native-screens')
+    implementation project(':react-native-sound')
+    implementation project(':react-native-vector-icons')
+    implementation project(':@react-native-voice_voice')
+    implementation project(':@react-native-community_slider')
+    implementation project(':@react-native-picker_picker')
 }
