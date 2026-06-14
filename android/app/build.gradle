@@ -4,8 +4,7 @@ apply plugin: "com.facebook.react"
 
 react {
     root = file("../../")
-    reactNativeDir = file("../../node_modules/react-native")
-    cliFile = file("../../node_modules/react-native/cli.js")
+    autolinkLibrariesWithApp()
 }
 
 def enableProguardInReleaseBuilds = false
